@@ -17,9 +17,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: |
-            dist
-            package.json
+          path: dist
+          # path: |
+          #   dist
+          #   package.json
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -34,5 +35,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Get Build Artifacts
+        uses: actions/download-artifact@v3
+        with: 
+          name: dist-files    # note the same name as test's step
+      - name: Output contents
+        run: ls
       - name: Deploy
         run: echo "Deploying..."
